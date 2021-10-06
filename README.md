@@ -1,43 +1,35 @@
-### 2 
+# Dockerizing Flask with Postgres, Gunicorn, and Nginx
 
-Para este proyecto prefiero usar una bd relacional. Si fuera una bd muy grande donde mis consultas fueran a demorar mucho, consideraria NOSQL. Aunque al ser un bd chica si podria usar una no sql ya que no necesito tener integridad de los datos. En realidad las dos opciones son validas para este caso.
+## Want to learn how to build this?
 
-CREATE TABLE jokes(
-    id serial primary key,
-    jokes VARCHAR(256) NOT NULL,
-    create_at TIMESTAMP NOT NULL,
-    active BOOLEAN NOT NULL DEFAULT TRUE
-);
+Check out the [post](https://testdriven.io/blog/dockerizing-flask-with-postgres-gunicorn-and-nginx).
 
-db.createCollection(jokes, {
-    id: <number>,
-    jokes:<string>,
-    create_at:<string>,
-    active:<boolean>
-})
+## Want to use this project?
 
-### 3
+### Development
 
-#### 3.1 Ejecutar
-Para ejecutar el proyecto usar docker-compose.
-    docker-compose up -d --build
-    docker-compose up
-Psdata: Si estas en Linux y no tienes docker agregado a un grupo usar SUDO.
+Uses the default Flask development server.
 
-### 3.2 Doc
+1. Rename *.env.dev-sample* to *.env.dev*.
+1. Update the environment variables in the *docker-compose.yml* and *.env.dev* files.
+    - (M1 chip only) Remove `-slim-buster` from the Python dependency in `services/web/Dockerfile` to suppress an issue with installing psycopg2
+1. Build the images and run the containers:
 
-#### Contrato GET
+    ```sh
+    $ docker-compose up -d --build
+    ```
 
-http://172.19.0.3:5000/jokes$value={}
+    Test it out at [http://localhost:5000](http://localhost:5000). The "web" folder is mounted into the container and your code changes apply automatically.
 
-#### Contrato Post
+### Production
 
-http://172.19.0.3:5000/jokes$value={}
+Uses gunicorn + nginx.
 
-#### Contrato Patch
+1. Rename *.env.prod-sample* to *.env.prod* and *.env.prod.db-sample* to *.env.prod.db*. Update the environment variables.
+1. Build the images and run the containers:
 
-http://172.19.0.3:5000/jokes$id={}$joke={}
+    ```sh
+    $ docker-compose -f docker-compose.prod.yml up -d --build
+    ```
 
-#### Contrato Delete
-
-http://172.19.0.3:5000/jokes$id={}
+    Test it out at [http://localhost:1337](http://localhost:1337). No mounted folders. To apply changes, the image must be re-built.

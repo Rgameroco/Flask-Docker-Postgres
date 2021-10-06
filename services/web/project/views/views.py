@@ -13,7 +13,6 @@ from flask import (
 import requests
 from flask_sqlalchemy import SQLAlchemy
 from ..models.jokes import Jokes
-from utils.utils import replace_unicode_character
 import json
 from json import JSONEncoder
 import logging
@@ -43,8 +42,8 @@ class get_joke_chuck_or_dad(MethodView):
             jokes = Jokes(joke=value)
             jokes.save()
             return "Create a new imput", 200
-        except:
-            return "Error try again", 400
+        except Exception as e:
+            return str(e), 400
     
     def patch(self,id , joke):
         try:
