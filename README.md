@@ -20,9 +20,9 @@ db.createCollection(jokes, {
 
 #### 3.1 Ejecutar
 Para ejecutar el proyecto usar docker-compose.
-    docker-compose -f docker-compose.prod.yml up -d --build
-    sudo docker-compose -f docker-compose.prod.yml exec web python manage.py create_db
-    docker-compose up
+   - docker-compose -f docker-compose.prod.yml up -d --build
+   - sudo docker-compose -f docker-compose.prod.yml exec web python manage.py create_db
+   - docker-compose up
 Psdata: Si estas en Linux y no tienes docker agregado a un grupo usar SUDO.
 
 ### 3.2 Doc
